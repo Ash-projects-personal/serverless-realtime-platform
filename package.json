@@ -1,0 +1,41 @@
+{
+  "name": "serverless-realtime-platform",
+  "version": "0.1.0",
+  "description": "Serverless real-time collaboration platform on AWS API Gateway WebSockets + Lambda + DynamoDB, with Operational Transformation for conflict-free concurrent edits.",
+  "main": "websocket_handler.js",
+  "scripts": {
+    "deploy": "serverless deploy",
+    "remove": "serverless remove",
+    "logs": "serverless logs -f websocket -t",
+    "test": "echo \"No tests yet — see Day 14 of the central improvement plan\" && exit 0"
+  },
+  "keywords": [
+    "serverless",
+    "websockets",
+    "aws-lambda",
+    "dynamodb",
+    "api-gateway",
+    "real-time",
+    "operational-transformation"
+  ],
+  "author": "Ashish Shetty",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ash-projects-personal/serverless-realtime-platform.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Ash-projects-personal/serverless-realtime-platform/issues"
+  },
+  "homepage": "https://github.com/Ash-projects-personal/serverless-realtime-platform#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1691.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.39.0",
+    "serverless-offline": "^13.6.0"
+  }
+}

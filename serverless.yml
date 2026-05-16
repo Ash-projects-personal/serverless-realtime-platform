@@ -1,0 +1,70 @@
+service: serverless-realtime-platform
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ${opt:region, 'us-east-1'}
+  stage: ${opt:stage, 'dev'}
+  websocketsApiName: realtime-collab-${self:provider.stage}
+  websocketsApiRouteSelectionExpression: $request.body.action
+  environment:
+    CONNECTIONS_TABLE: !Ref ConnectionsTable
+    DOCUMENTS_TABLE: !Ref DocumentsTable
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:DeleteItem
+            - dynamodb:GetItem
+            - dynamodb:UpdateItem
+            - dynamodb:Scan
+            - dynamodb:Query
+          Resource:
+            - !GetAtt ConnectionsTable.Arn
+            - !GetAtt DocumentsTable.Arn
+        - Effect: Allow
+          Action:
+            - execute-api:ManageConnections
+          Resource: arn:aws:execute-api:*:*:**/@connections/*
+
+functions:
+  websocket:
+    handler: websocket_handler.handler
+    events:
+      - websocket: $connect
+      - websocket: $disconnect
+      - websocket: $default
+      - websocket: sendmessage
+
+resources:
+  Resources:
+    ConnectionsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-${self:provider.stage}-connections
+        AttributeDefinitions:
+          - AttributeName: connectionId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: connectionId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+    DocumentsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-${self:provider.stage}-documents
+        AttributeDefinitions:
+          - AttributeName: documentId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: documentId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+plugins:
+  - serverless-offline
