@@ -1,5 +1,9 @@
 # serverless-realtime-platform
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![AWS Lambda](https://img.shields.io/badge/AWS-Lambda-ff9900.svg)](https://aws.amazon.com/lambda/)
+[![Serverless](https://img.shields.io/badge/Serverless-framework-fd5750.svg)](https://www.serverless.com/)
+
 Built this to test out AWS API Gateway WebSockets for real-time collaboration. Pushing the core Lambda handler here.
 
 It's the backend for a real-time collaborative document editor. Instead of running a heavy Node.js/Socket.io server that requires constant uptime and scaling rules, this uses AWS API Gateway to maintain the WebSocket connections and triggers AWS Lambda functions only when messages are sent.
